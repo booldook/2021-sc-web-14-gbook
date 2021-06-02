@@ -9,3 +9,6 @@
 .form-wrapper .comment {padding: .5em 0; color: #a70707;}
 .form-wrapper .bt-wrap {padding-top: 4px;}
 .form-wrapper .bt-wrap button {height: 38px; width: 100px;}
+
+.form-wrapper input.require {border: 1px solid #a70707; background-color: #f3dede;}
+.form-wrapper .require-comment {margin: .25em 0 1em 0; color: #a70707; display: none;}
