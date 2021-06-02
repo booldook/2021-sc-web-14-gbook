@@ -4,4 +4,8 @@
 /* font-family: 'Noto Sans KR', sans-serif; */
 
 html, body {font-family: 'Noto Sans KR', sans-serif;}
-.wrapper {max-width: 1200px; margin: auto;}
+.wrapper {max-width: 1168px; margin: auto;}
+
+@media screen and (max-width: 1200px) {
+	.wrapper {width: calc(100% - 1em);}
+}
