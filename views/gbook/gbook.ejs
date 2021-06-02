@@ -1,0 +1,26 @@
+<%- include('../inc/head') %> 
+<%- include('../inc/header') %> 
+<link rel="stylesheet" href="/css/gbook/gbook.css">
+<div class="wrapper">
+	<%- include('./title') %> 
+	<%- include('./form') %> 
+	<table class="table table-hover text-center gbook-tb">
+		<thead class="thead-dark">
+			<tr>
+				<th>번호</th>
+				<th>작성자</th>
+				<th>내용</th>
+				<th>첨부이미지</th>
+				<th>작성일</th>
+				<th>관리</th>
+			</tr>
+		</thead>
+		<tbody>
+			<%- include('./list') %> 
+		</tbody>
+	</table>
+</div>
+
+<%- include('../inc/footer') %>
+<script src="/js/gbook/gbook.js"></script> 
+<%- include('../inc/foot') %> 
