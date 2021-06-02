@@ -1,0 +1,8 @@
+.form-wrapper {margin: 1em 0; display: flex;}
+.form-wrapper > :first-child {flex-grow: 1;}
+.form-wrapper > :last-child {flex-grow: 0; margin-left: 1em;}
+.form-wrapper input {margin: .25em 0;}
+.form-wrapper .form-control-file {padding: .5em 0;}
+.form-wrapper .comment {padding: .5em 0; color: #a70707;}
+.form-wrapper .bt-wrap {padding-top: 4px;}
+.form-wrapper .bt-wrap button {height: 80px; width: 120px;}
