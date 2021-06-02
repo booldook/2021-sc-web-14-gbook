@@ -22,6 +22,9 @@ app.use('/', express.static(path.join(__dirname, './public')));
 app.use('/uploads', express.static(path.join(__dirname, './storages')));
 
 /**************** Router: dynamic ******************/
+const gbookRouter = require('./routes/gbook-router');
+
+app.use('/gbook', gbookRouter);
 
 
 /**************** Router: error ******************/
