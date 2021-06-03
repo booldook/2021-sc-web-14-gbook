@@ -14,19 +14,16 @@ router.get(['/', '/list', '/list/:page'], async (req, res, next) => {
 	try {
 		let sql, values;
 		sql = 'SELECT COUNT(id) FROM gbook';
-		
 		const [[r]] = await pool.execute(sql);
 		let [totalRecord] = Object.values(r);
 		let page = req.params.page || 1;
 		let pager = makePager(page, totalRecord, 5, 3);
-		res.json(pager);
-		/*
-		sql = 'SELECT G.*, F.savename FROM gbook G LEFT JOIN gbookfile F ON G.id = F.gid ORDER BY G.id DESC LIMIT ?, ?';
-		const [r] = await pool.execute(sql);
-		r.forEach(v => v.createdAt = transDate(v.createdAt, 'YMD-KO'));
-		r.forEach(v => v.savename = transFrontSrc(v.savename));
-		res.render('gbook/gbook', { ...ejs, lists: r });
-		*/
+		sql = `SELECT G.*, F.savename FROM gbook G LEFT JOIN gbookfile F ON G.id = F.gid ORDER BY G.id DESC LIMIT ?, ?`;
+		values = [String(pager.startIdx), String(pager.listCnt)];
+		const [r2] = await pool.execute(sql, values);
+		r2.forEach(v => v.createdAt = transDate(v.createdAt, 'YMD-KO'));
+		r2.forEach(v => v.savename = transFrontSrc(v.savename));
+		res.render('gbook/gbook', { ...ejs, lists: r2, pager });
 	}
 	catch(err) {
 		next(error(err));
