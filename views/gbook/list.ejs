@@ -4,7 +4,7 @@
 	<td class="text-left"><%= v.content %> </td>
 	<td>
 		<% if(v.savename) { %> 
-			<img src="<%= v.savename %> " alt="첨부이미지">
+			<img src="<%= v.savename %> " alt="첨부이미지" onclick="onImgModal(this);">
 		<% } %>
 	</td>
 	<td><%= v.createdAt %> </td>
@@ -13,3 +13,4 @@
 		<button onclick="onDelete(this);" class="btn btn-sm btn-danger">삭제</button>
 	</td>
 </tr>
+<script src="/js/gbook/list.js"></script>
