@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const moment = require('moment');
 const { pool } = require('../modules/mysql-init');
 const { upload } = require('../modules/multer-init');
 const { error } = require('../modules/utils');
@@ -11,7 +12,20 @@ const ejs = {
 }
 
 router.get('/', async (req, res, next) => {
-	res.render('gbook/gbook', { ...ejs });
+	try {
+		let sql, values;
+		const toast = req.query.toast;
+		sql = 'SELECT G.*, F.savename FROM gbook G LEFT JOIN gbookfile F ON G.id = F.gid ORDER BY G.id DESC';
+		const [r] = await pool.execute(sql);
+		r.forEach(v => {
+			v.createdAt = moment(v.createdAt).format('YYYY-MM-DD');
+			v.savename = v.savename ? '/uploads/'+ v.savename.substr(0, 6) + '/' + v.savename : null;
+		});
+		res.render('gbook/gbook', { ...ejs, lists: r, toast });
+	}
+	catch(err) {
+		next(error(err));
+	}
 });
 
 router.post('/create', upload.single('upfile'), async (req, res, next) => {
@@ -30,9 +44,9 @@ router.post('/create', upload.single('upfile'), async (req, res, next) => {
 			sql = 'INSERT INTO gbookfile SET oriname=?, savename=?, size=?, type=?, gid=?';
 			values = [originalname, filename, size, mimetype, r.insertId];
 			const [r2] = await pool.execute(sql, values);
-			res.json(r2);
 		}
 
+		res.redirect('/gbook?toast=C');
 	}
 	catch(err) {
 		next(error(err));

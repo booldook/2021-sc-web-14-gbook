@@ -1,9 +1,13 @@
 <tr>
-	<td>1</td>
-	<td>홍길동</td>
-	<td class="text-left">아버지를 아버지라... 흑흑</td>
-	<td><img src="/img/error/404-error.png" alt="첨부이미지"></td>
-	<td>1520-12-01</td>
+	<td><%= v.id %></td>
+	<td><%= v.writer %> </td>
+	<td class="text-left"><%= v.content %> </td>
+	<td>
+		<% if(v.savename) { %> 
+			<img src="<%= v.savename %> " alt="첨부이미지">
+		<% } %>
+	</td>
+	<td><%= v.createdAt %> </td>
 	<td>
 		<button onclick="onUpdate(this);" class="btn btn-sm btn-success">수정</button>
 		<button onclick="onDelete(this);" class="btn btn-sm btn-danger">삭제</button>

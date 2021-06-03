@@ -16,7 +16,9 @@
 			</tr>
 		</thead>
 		<tbody>
-			<%- include('./list') %> 
+			<% for(let v of lists) { %>
+				<%- include('./list', {v}) %> 
+			<% } %> 
 		</tbody>
 	</table>
 </div>
