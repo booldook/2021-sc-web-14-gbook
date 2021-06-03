@@ -1,5 +1,7 @@
-<link rel="stylesheet" href="/css/pager/pager.css">
-<nav class="pager-container">
+<style>
+.pager-container .page-item.active .page-link {background-color: #646c75; border-color: #646c75;}
+</style>
+<nav class="pager-container d-flex justify-content-center my-5">
 	<ul class="pagination pager-wrapper">
 		<li class="page-item">
 			<a class="page-link" href="/gbook/list/1"><i class="bi-chevron-bar-left"></i></a>
@@ -11,7 +13,7 @@
 			<a class="page-link" href="/gbook/list/<%= prevPage %>"><i class="bi-chevron-left"></i></a>
 		</li>
 		<% for(let i=startPage; i<=endPage; i++) { %>
-			<li class="page-item active">
+			<li class="page-item <%= (i === page) ? 'active' : '' %>">
 				<a class="page-link" href="/gbook/list/<%= i %>"><%= i %></a>
 			</li>
 		<% } %>

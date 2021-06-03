@@ -17,7 +17,7 @@ router.get(['/', '/list', '/list/:page'], async (req, res, next) => {
 		const [[r]] = await pool.execute(sql);
 		let [totalRecord] = Object.values(r);
 		let page = req.params.page || 1;
-		let pager = makePager(page, totalRecord, 5, 3);
+		let pager = makePager(page, totalRecord, 4, 3);
 		sql = `SELECT G.*, F.savename FROM gbook G LEFT JOIN gbookfile F ON G.id = F.gid ORDER BY G.id DESC LIMIT ?, ?`;
 		values = [String(pager.startIdx), String(pager.listCnt)];
 		const [r2] = await pool.execute(sql, values);
