@@ -1,0 +1,18 @@
+<link rel="stylesheet" href="/css/auth/title.css">
+<div class="jumbotron title-wrapper">
+	<h2 class="title">
+		<i class="fa fa-paper-plane mr-2"></i>
+		<%- pageTitle %>
+	</h2>
+	<hr>
+	<h3 class="title">
+		<%- pageDesc %>
+		<div class="mt-3">
+			<% if(pageMode === 'LOGIN') { %>
+				<a href="/auth/join" class="btn btn-primary">회원 가입</a>
+			<% } else { %>
+				<a href="/auth/login" class="btn btn-info">회원 로그인</a>
+			<% } %>
+		</div>
+	</h3>
+</div>

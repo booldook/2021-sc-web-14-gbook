@@ -29,8 +29,10 @@ app.use('/uploads', express.static(path.join(__dirname, './storages')));
 
 /**************** Router: dynamic ******************/
 const gbookRouter = require('./routes/gbook-router');
+const authRouter = require('./routes/auth-router');
 
 app.use('/gbook', gbookRouter);
+app.use('/auth', authRouter);
 
 
 /**************** Router: error ******************/
