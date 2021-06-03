@@ -4,9 +4,12 @@ const app = express();
 const path = require('path');
 require('dotenv').config();
 require('./modules/server-init')(app, 3000);
+const session = require('./modules/session-init');
 
 /**************** Middlewares ******************/
 const { createError, error404, error500 } = require('./middlewares/error-mw');
+
+
 
 /**************** Views ******************/
 app.set('view engine', 'ejs');
@@ -16,6 +19,9 @@ app.locals.pretty = true;
 /**************** req.body ******************/
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+/**************** Sessions ******************/
+app.use(session());
 
 /**************** Router: static ******************/
 app.use('/', express.static(path.join(__dirname, './public')));

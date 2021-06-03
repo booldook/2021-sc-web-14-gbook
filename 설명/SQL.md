@@ -128,3 +128,10 @@ WHERE B.pay >= 3000000
 ORDER BY A.id ASC 
 LIMIT 0, 10;
 ```
+
+### 외부접속 권한문제
+```sql
+USE mysql;
+ALTER user 'shop'@'%' identified with mysql_native_password BY '000000';
+flush privileges;
+```
