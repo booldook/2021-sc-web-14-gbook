@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { pool } = require('../modules/mysql-init');
 const { upload } = require('../modules/multer-init');
-const { error, alert, transDate, transFrontSrc } = require('../modules/utils');
+const { error, alert, transDate, transFrontSrc, makePager } = require('../modules/utils');
 
 const ejs = {
 	tabTitle: 'Express 방명록',
@@ -10,14 +10,23 @@ const ejs = {
 	pageDesc: 'express, ejs, multer, mysql 등을 사용한 방명록',
 }
 
-router.get('/', async (req, res, next) => {
+router.get(['/', '/list', '/list/:page'], async (req, res, next) => {
 	try {
 		let sql, values;
-		sql = 'SELECT G.*, F.savename FROM gbook G LEFT JOIN gbookfile F ON G.id = F.gid ORDER BY G.id DESC';
+		sql = 'SELECT COUNT(id) FROM gbook';
+		
+		const [[r]] = await pool.execute(sql);
+		let [totalRecord] = Object.values(r);
+		let page = req.params.page || 1;
+		let pager = makePager(page, totalRecord, 5, 3);
+		res.json(pager);
+		/*
+		sql = 'SELECT G.*, F.savename FROM gbook G LEFT JOIN gbookfile F ON G.id = F.gid ORDER BY G.id DESC LIMIT ?, ?';
 		const [r] = await pool.execute(sql);
 		r.forEach(v => v.createdAt = transDate(v.createdAt, 'YMD-KO'));
 		r.forEach(v => v.savename = transFrontSrc(v.savename));
 		res.render('gbook/gbook', { ...ejs, lists: r });
+		*/
 	}
 	catch(err) {
 		next(error(err));
