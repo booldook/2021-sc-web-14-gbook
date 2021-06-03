@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const moment = require('moment');
 const { pool } = require('../modules/mysql-init');
 const { upload } = require('../modules/multer-init');
-const { error } = require('../modules/utils');
+const { error, alert, transDate, transFrontSrc } = require('../modules/utils');
 
 const ejs = {
 	tabTitle: 'Express 방명록',
@@ -14,14 +13,11 @@ const ejs = {
 router.get('/', async (req, res, next) => {
 	try {
 		let sql, values;
-		const toast = req.query.toast;
 		sql = 'SELECT G.*, F.savename FROM gbook G LEFT JOIN gbookfile F ON G.id = F.gid ORDER BY G.id DESC';
 		const [r] = await pool.execute(sql);
-		r.forEach(v => {
-			v.createdAt = moment(v.createdAt).format('YYYY-MM-DD');
-			v.savename = v.savename ? '/uploads/'+ v.savename.substr(0, 6) + '/' + v.savename : null;
-		});
-		res.render('gbook/gbook', { ...ejs, lists: r, toast });
+		r.forEach(v => v.createdAt = transDate(v.createdAt, 'YMD-KO'));
+		r.forEach(v => v.savename = transFrontSrc(v.savename));
+		res.render('gbook/gbook', { ...ejs, lists: r });
 	}
 	catch(err) {
 		next(error(err));
@@ -45,8 +41,7 @@ router.post('/create', upload.single('upfile'), async (req, res, next) => {
 			values = [originalname, filename, size, mimetype, r.insertId];
 			const [r2] = await pool.execute(sql, values);
 		}
-
-		res.redirect('/gbook?toast=C');
+		res.send(alert('저장되었습니다', '/gbook'));
 	}
 	catch(err) {
 		next(error(err));
