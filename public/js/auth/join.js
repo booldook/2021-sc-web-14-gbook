@@ -13,7 +13,7 @@ var successMsg = [
 	'사용하실 수 있습니다.'
 ];
 var errorMsg = [
-	'사용할 수 없어요. 다른아이디를 사용하세요.',
+	'아이디는 4자 이상입니다.',
 	'비밀번호는 숫자, 문자, 특수문자를 포함한 8 ~ 16자리 입니다.',
 	'비밀번호가 일치하지 않습니다.',
 	'이름은 한글자 이상입니다.',
@@ -56,13 +56,13 @@ function onBlurId(el) {
 	var userid = $el.val().trim();
 	var idx = $el.data('id');
 	if(userid.length < 4) {
-		showMsg($el, false, '아이디는 4자 이상입니다.');
+		showMsg($el, false, errorMsg[idx]);
 		return false;
 	}
 	$.get('/auth/idchk/'+userid).then(function(r) {
 		console.log(r);
 		if(r.validation) showMsg($el, true, successMsg[idx]);
-		else showMsg($el, false, errorMsg[idx]);
+		else showMsg($el, false, '사용할 수 없습니다. 다른 아이디를 사용해 주세요.');
 	}).catch(function(err) {
 		console.log(err);
 	})
