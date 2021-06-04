@@ -3,8 +3,11 @@
 	<div class="logo">LOGO</div>
 	<div class="navi-wrap">
 		<a href="/gbook">GuestBook</a>
-		<a href="/auth/signout">SignOut</a>
-		<a href="/auth/sign">SignIn</a>
-		<a href="/auth/join">Join</a>
+		<% if(user) { %>
+			<a href="/auth/signout">SignOut</a>
+		<% } else { %>
+			<a href="/auth/sign">SignIn</a>
+			<a href="/auth/join">Join</a>
+		<% } %>
 	</div>
 </header>

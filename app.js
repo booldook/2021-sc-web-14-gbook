@@ -5,6 +5,7 @@ const app = express();
 const path = require('path');
 require('./modules/server-init')(app, 3000);
 const session = require('./modules/session-init');
+const local = require('./middlewares/local-mw');
 
 /**************** Middlewares ******************/
 const { createError, error404, error500 } = require('./middlewares/error-mw');
@@ -21,7 +22,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 /**************** Sessions ******************/
-app.use(session());
+app.use(session()); // req.session 생성
+app.use(local); // res.locals.user 생성
 
 /**************** Router: static ******************/
 app.use('/', express.static(path.join(__dirname, './public')));
