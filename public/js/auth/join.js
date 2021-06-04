@@ -51,7 +51,7 @@ function onBlurPw2() {
 	var $el = $(this);
 	var pass = $el.val().trim();
 	var passOriginal = $('form[name="joinForm"]').find('input[name="userpw"]').val().trim();
-	if(pass === passOriginal) showMsg($el, true, '사용하실 수 있습니다.');
+	if(pass === passOriginal && pass.length >= 8) showMsg($el, true, '사용하실 수 있습니다.');
 	else showMsg($el, false, '비밀번호가 일치하지 않습니다.');
 }
 
@@ -69,3 +69,33 @@ function onBlurMail() {
 	else showMsg($el, false, '이메일을 정확히 입력하세요.');
 }
 
+function onJoinSubmit(f) {
+	// 1. form 안의 모든 input이 success를 가지고 있는지 체크하고... 
+	// 2. 다 가지고 있으면 전송하고...
+	// 3. 가지고 있지 않으면 안가지고 있는 input에 커서를 위치시키기...
+	var $form = $(f);
+	var $input = $form.find('input');
+	$input.each(function() { $(this).trigger('blur') });
+	var success = Array.from($input).every(function(v) { return $(v).hasClass('success') });
+	if(success) return true;
+	else {
+		console.log( $form.find('input:not(.success)').eq(0) );
+		$form.find('input:not(.success)').eq(0).focus();
+		return false;
+	}
+}
+
+
+
+
+/* var successChk = Array.from($('form[name="joinForm"]').find('input')).every(function(v) {
+	return $(v).hasClass('form-control');
+});
+console.log(successChk);
+
+var successChk = true;
+$('form[name="joinForm"]').find('input').each(function(i) {
+	if(!$(this).hasClass('success')) successChk = false;
+});
+console.log(successChk)
+*/

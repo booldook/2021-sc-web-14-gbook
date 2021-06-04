@@ -7,7 +7,7 @@
 		<h3 class="title">
 			<i class="fa fa-user-edit"></i>	회원가입 (Member Join)
 		</h3>
-		<form class="join-wrap" method="POST" action="/auth/join" name="joinForm">
+		<form class="join-wrap" method="POST" action="/auth/join" name="joinForm" onsubmit="return onJoinSubmit(this);">
 			<div class="list">
 				<div class="title">아이디 -</div>
 				<div class="content">
