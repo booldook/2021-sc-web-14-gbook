@@ -31,7 +31,27 @@ router.get('/sign', (req, res, next) => {
 });
 
 router.post('/sign', async (req, res, next) => {
-
+	try {
+		let sql, values, compare, msg = '아이디와 패스워드를 확인하세요.';
+		let { userid, userpw } = req.body;
+		sql = 'SELECT * FROM users WHERE userid=?';
+		const [r] = await pool.execute(sql, [userid]);
+		if(r.length === 1) {	// 아이디 일치
+			compare = await bcrypt.compare(userpw, r[0].userpw);
+			if(compare) {	// 비밀번호 일치
+				res.send(alert('로그인 되었습니다.', '/'));
+			}
+			else {	// 비밀번호 틀림
+				res.send(alert(msg, '/auth/sign'));
+			}
+		}
+		else {	// 아이디 틀림
+			res.send(alert(msg, '/auth/sign'));
+		}
+	}
+	catch(err) {
+		next(error(err));
+	}
 });
 
 router.get('/signout', (req, res, next) => {
