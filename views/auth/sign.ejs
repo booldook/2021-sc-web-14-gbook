@@ -1,0 +1,31 @@
+<%- include('../inc/head') %> 
+<%- include('../inc/header') %> 
+<link rel="stylesheet" href="/css/auth/sign.css">
+<div class="wrapper">
+	<%- include('./title') %> 
+	<div class="sign-wrapper wrapper-xs">
+		<h3 class="title">
+			<i class="fa fa-user-edit"></i>	회원로그인 (Member SignIn)
+		</h3>
+		<form class="sign-wrap" method="POST" action="/auth/sign" name="signForm" onsubmit="return onSignSubmit(this);">
+			<div class="list">
+				<div class="title">아이디 -</div>
+				<div class="content">
+					<input type="text" name="userid" class="form-control" placeholder="아이디">
+				</div>
+			</div>
+			<div class="list">
+				<div class="title">패스워드 -</div>
+				<div class="content">
+					<input type="password" name="userpw" class="form-control" placeholder="패스워드">
+				</div>
+			</div>
+			<div class="bt-list text-center">
+				<button class="btn btn-primary">로그인</button>
+			</div>
+		</form>
+	</div>
+</div>
+<%- include('../inc/footer') %>
+<script src="/js/auth/sign.js"></script> 
+<%- include('../inc/foot') %> 
