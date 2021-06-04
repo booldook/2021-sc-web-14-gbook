@@ -5,12 +5,16 @@
 
 html, body {font-family: 'Noto Sans KR', sans-serif;}
 .wrapper {max-width: 1168px; margin: auto;}
-
+.wrapper-sm {max-width: 736px; margin: auto;}
 
 .jumbotron {padding: 3em 2em;}
 
 @media screen and (max-width: 1200px) {
 	.wrapper {width: calc(100% - 1em);}
+}
+
+@media screen and (max-width: 768px) {
+	.wrapper-sm {width: calc(100% - 1em);}
 }
 
 @media (min-width: 576px) {

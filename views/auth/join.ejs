@@ -1,10 +1,55 @@
 <%- include('../inc/head') %> 
 <%- include('../inc/header') %> 
-<link rel="stylesheet" href="/css/gbook/join.css">
+<link rel="stylesheet" href="/css/auth/join.css">
 <div class="wrapper">
 	<%- include('./title') %> 
-	
+	<div class="join-wrapper wrapper-sm">
+		<h3 class="title">
+			<i class="fa fa-user-edit"></i>	회원가입 (Member Join)
+		</h3>
+		<form class="join-wrap" method="POST" action="/auth/join">
+			<div class="list">
+				<div class="title">아이디 -</div>
+				<div class="content">
+					<input type="text" name="userid" class="form-control" placeholder="아이디를 입력하세요.">
+				</div>
+				<div class="warning">아이디가 사용가능 합니다.</div>
+			</div>
+			<div class="list">
+				<div class="title">패스워드 -</div>
+				<div class="content">
+					<input type="password" name="userpw" class="form-control" placeholder="패스워드를 입력하세요.">
+				</div>
+				<div class="warning"></div>
+			</div>
+			<div class="list">
+				<div class="title">패스워드 확인 -</div>
+				<div class="content">
+					<input type="password" name="userpw2" class="form-control" placeholder="패스워드를 입력하세요.">
+				</div>
+				<div class="warning"></div>
+			</div>
+			<div class="list">
+				<div class="title">이름 -</div>
+				<div class="content">
+					<input type="text" name="username" class="form-control" placeholder="이름을 입력하세요.">
+				</div>
+				<div class="warning"></div>
+			</div>
+			<div class="list">
+				<div class="title">이메일 -</div>
+				<div class="content">
+					<input type="text" name="email" class="form-control" placeholder="이메일을 입력하세요.">
+				</div>
+				<div class="warning"></div>
+			</div>
+			<div class="bt-list text-center">
+				<button class="btn btn-primary">회원가입</button>
+				<button class="btn btn-danger" type="reset">다시작성</button>
+			</div>
+		</form>
+	</div>
 </div>
 <%- include('../inc/footer') %>
-<script src="/js/gbook/join.js"></script> 
+<script src="/js/auth/join.js"></script> 
 <%- include('../inc/foot') %> 

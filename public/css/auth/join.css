@@ -1,0 +1,8 @@
+.join-wrapper h3.title {font-size: 1.5em; margin: 2em 0; text-align: center;}
+.join-wrapper .list {margin-bottom: 1em;}
+.join-wrapper .list > .title {margin-bottom: .5em; font-size: 1.125em; color: #1a2846;}
+.join-wrapper .list > .content {}
+.join-wrapper .list > .warning {padding: .5em; display: none;}
+
+.join-wrapper input.active {border: 1px solid #49cef6; background-color: #e3f6fb;}
+.join-wrapper input.danger {border: 1px solid #f64949; background-color: #ffe0e0;}

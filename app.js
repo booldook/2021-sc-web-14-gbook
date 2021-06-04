@@ -1,8 +1,8 @@
 /**************** Global ******************/
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const path = require('path');
-require('dotenv').config();
 require('./modules/server-init')(app, 3000);
 const session = require('./modules/session-init');
 
