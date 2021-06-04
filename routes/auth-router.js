@@ -11,6 +11,20 @@ const ejs = {
 	pageMode: ''
 }
 
+router.get('/idchk/:userid', async (req, res, next) => {
+	try {
+		let sql;
+		let userid = req.params.userid;
+		sql = 'SELECT userid FROM users WHERE serid=?';
+		const [r] = await pool.execute(sql, [userid]);
+		if(r.length === 0) res.status(200).json({ validation: true });
+		else res.status(200).json({ validation: false });
+	}
+	catch(err) {
+		res.status(500).json({ error: err });
+	}
+});
+
 router.get('/signin', (req, res, next) => {
 	res.render('auth/join', { ...ejs, pageMode: 'LOGIN', pageDesc: '기존회원분은 아래의 버튼을 클릭하여 로그인 해 주세요.' });
 });
