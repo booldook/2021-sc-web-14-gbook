@@ -29,8 +29,18 @@ router.get('/signin', (req, res, next) => {
 	res.render('auth/join', { ...ejs, pageMode: 'LOGIN', pageDesc: '기존회원분은 아래의 버튼을 클릭하여 로그인 해 주세요.' });
 });
 
-router.post('/signin', (req, res, next) => {
-	res.send('로그인처리');
+router.post('/signin', async (req, res, next) => {
+	try {
+		let sql, values;
+		let { userid, userpw, username, email } = req.body;
+		sql = 'INSERT INTO users SET userid=?, userpw=?, username=?, email=?';
+		values = [userid, userpw, username, email];
+		const [r] = await pool.execute(sql, values);
+		res.send(alert('회원가입이 완료되었습니다.', '/'));
+	}
+	catch(err) {
+		next(error(err));
+	}
 });
 
 router.get('/signout', (req, res, next) => {
