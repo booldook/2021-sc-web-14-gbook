@@ -12,7 +12,7 @@ var isIE11 = !!window.MSInputMethodContext && !!document.documentMode;
 /****************** regExp ********************/
 // Email 정규표현식
 function validEmail(v) {
-	var emailRegExp = /([\w-\.]+)@((?:[\w]+\.)+)([a-zA-Z]{2,4})/i;
+	var emailRegExp = /(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/g;
 	return (v.match(emailRegExp) !== null) ? true : false
 }
 
@@ -35,21 +35,20 @@ function validPhone(v) {
 }
 
 //링크 정규식
-var URLPattern = /(((http(s)?:\/\/)\S+(\.[^(\n|\t|\s,)]+)+)|((http(s)?:\/\/)?(([a-zA-z\-_]+[0-9]*)|([0-9]*[a-zA-z\-_]+)){2,}(\.[^(\n|\t|\s,)]+)+))+/gi;
-var emailPattern = /(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/g;
+function validLink(v) {
+	var URLPattern = /(((http(s)?:\/\/)\S+(\.[^(\n|\t|\s,)]+)+)|((http(s)?:\/\/)?(([a-zA-z\-_]+[0-9]*)|([0-9]*[a-zA-z\-_]+)){2,}(\.[^(\n|\t|\s,)]+)+))+/gi;
+	return (v.match(URLPattern) !== null) ? true : false
+}
 
+//이메일 치환
 function emailReplace(_email) {
 	return '<a href="mailto:' + _email + '" target="_blank">' + _email + '</a>'
 }
 
+//링크 치환
 function URLReplace(_url) {
 	return '<a href="' + _url + '" target="_blank">' + _url + '</a>'
 }
-
-function validLink(v) {
-	return (v.match(URLPattern) !== null) ? true : false
-}
-
 
 
 /****************** Array.sort() ********************/
