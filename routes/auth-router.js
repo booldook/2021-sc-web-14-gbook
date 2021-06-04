@@ -15,7 +15,7 @@ router.get('/idchk/:userid', async (req, res, next) => {
 	try {
 		let sql;
 		let userid = req.params.userid;
-		sql = 'SELECT userid FROM users WHERE serid=?';
+		sql = 'SELECT userid FROM users WHERE userid=?';
 		const [r] = await pool.execute(sql, [userid]);
 		if(r.length === 0) res.status(200).json({ validation: true });
 		else res.status(200).json({ validation: false });

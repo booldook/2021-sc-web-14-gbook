@@ -2,7 +2,9 @@
 .join-wrapper .list {margin-bottom: 1em;}
 .join-wrapper .list > .title {margin-bottom: .5em; font-size: 1.125em; color: #1a2846;}
 .join-wrapper .list > .content {}
-.join-wrapper .list > .warning {padding: .5em; display: none;}
+.join-wrapper .list > .warning {padding: .5em; display: none; color: #f64949;}
+.join-wrapper .list > .warning.success {color: #68aa13;}
 
 .join-wrapper input.active {border: 1px solid #49cef6; background-color: #e3f6fb;}
 .join-wrapper input.danger {border: 1px solid #f64949; background-color: #ffe0e0;}
+.join-wrapper input.success {border: 1px solid #a5f649; background-color: #f2ffe3;}
