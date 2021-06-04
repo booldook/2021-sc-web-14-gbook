@@ -1,8 +1,24 @@
-$('form[name="joinForm"]').find('input[name="userid"]').focus(onFocus).blur(onBlurId);
-$('form[name="joinForm"]').find('input[name="userpw"]').focus(onFocus).blur(onBlurPw);
-$('form[name="joinForm"]').find('input[name="userpw2"]').focus(onFocus).blur(onBlurPw2);
-$('form[name="joinForm"]').find('input[name="username"]').focus(onFocus).blur(onBlurName);
-$('form[name="joinForm"]').find('input[name="email"]').focus(onFocus).blur(onBlurMail);
+$('form[name="joinForm"]').find('input[name="userid"]').focus(onFocus);
+$('form[name="joinForm"]').find('input[name="userpw"]').focus(onFocus);
+$('form[name="joinForm"]').find('input[name="userpw2"]').focus(onFocus);
+$('form[name="joinForm"]').find('input[name="username"]').focus(onFocus);
+$('form[name="joinForm"]').find('input[name="email"]').focus(onFocus);
+
+var fn = [onBlurId, onBlurPw, onBlurPw2, onBlurName, onBlurMail];
+var successMsg = [
+	'너무 마음에 드는 아이디에요~',
+	'사용하실 수 있습니다.',
+	'사용하실 수 있습니다.',
+	'사용하실 수 있습니다.',
+	'사용하실 수 있습니다.'
+];
+var errorMsg = [
+	'사용할 수 없어요. 다른아이디를 사용하세요.',
+	'비밀번호는 숫자, 문자, 특수문자를 포함한 8 ~ 16자리 입니다.',
+	'비밀번호가 일치하지 않습니다.',
+	'이름은 한글자 이상입니다.',
+	'이메일을 정확히 입력하세요.'
+];
 
 function showMsg(el, valid, msg) {
 	if(valid === true) {
@@ -13,6 +29,10 @@ function showMsg(el, valid, msg) {
 		$(el).addClass('danger').removeClass('active success');
 		$(el).parent().next().removeClass('success').show().text(msg);
 	}
+	else if(valid == 'RESET') {
+		$(el).removeClass('active success danger');
+		$(el).parent().next().removeClass('success').hide().text('');
+	}
 	else {
 		$(el).removeClass('danger success').addClass('active');
 		$(el).parent().next().removeClass('success').hide().text('');
@@ -20,53 +40,65 @@ function showMsg(el, valid, msg) {
 }
 
 function onFocus() {
+	var $form = $('form[name="joinForm"]');
+	var $input = $form.find('input');
 	var $el = $(this);
-	showMsg($el);
+	var idx = $el.data('id')
+	for(var i=0; i<$input.length; i++) {
+		if(i < idx) fn[i]($input.eq(i));
+		else if(i > idx) showMsg($input.eq(i), 'RESET');
+		else showMsg($el);
+	}
 }
 
-function onBlurId() {
-	var $userid = $(this);
-	var userid = $userid.val().trim();
+function onBlurId(el) {
+	var $el = $(el);
+	var userid = $el.val().trim();
+	var idx = $el.data('id');
 	if(userid.length < 4) {
-		showMsg($userid, false, '아이디는 4자 이상입니다.');
+		showMsg($el, false, '아이디는 4자 이상입니다.');
 		return false;
 	}
 	$.get('/auth/idchk/'+userid).then(function(r) {
 		console.log(r);
-		if(r.validation) showMsg($userid, true, '너무 마음에 드는 아이디에요~');
-		else showMsg($userid, false, '사용할 수 없어요. 다른아이디를 사용하세요.');
+		if(r.validation) showMsg($el, true, successMsg[idx]);
+		else showMsg($el, false, errorMsg[idx]);
 	}).catch(function(err) {
 		console.log(err);
 	})
 }
 
-function onBlurPw() {
-	var $el = $(this);
+function onBlurPw(el) {
+	var $el = $(el);
 	var pass = $el.val().trim();
-	if(validPass(pass)) showMsg($el, true, '사용하실 수 있습니다.');
-	else showMsg($el, false, '비밀번호는 숫자, 문자, 특수문자를 포함한 8 ~ 16자리 입니다.');
+	var idx = $el.data('id');
+	if(validPass(pass)) showMsg($el, true, successMsg[idx]);
+	else showMsg($el, false, errorMsg[idx]);
 }
 
-function onBlurPw2() {
-	var $el = $(this);
+function onBlurPw2(el) {
+	var $el = $(el);
 	var pass = $el.val().trim();
+	var idx = $el.data('id');
 	var passOriginal = $('form[name="joinForm"]').find('input[name="userpw"]').val().trim();
-	if(pass === passOriginal && pass.length >= 8) showMsg($el, true, '사용하실 수 있습니다.');
-	else showMsg($el, false, '비밀번호가 일치하지 않습니다.');
+	if(pass === passOriginal && pass.length >= 8) showMsg($el, true, successMsg[idx]);
+	else showMsg($el, false, errorMsg[idx]);
 }
 
-function onBlurName() {
-	var $el = $(this);
+function onBlurName(el) {
+	var $el = $(el);
 	var name = $el.val().trim();
-	if(name.length > 0) showMsg($el, true, '사용하실 수 있습니다.');
-	else showMsg($el, false, '이름은 한글자 이상입니다.');
+	var idx = $el.data('id');
+	if(name.length > 0) showMsg($el, true, successMsg[idx]);
+	else showMsg($el, false, errorMsg[idx]);
 }
 
-function onBlurMail() {
-	var $el = $(this);
+function onBlurMail(el) {
+	var $el = $(el);
 	var email = $el.val().trim();
-	if(validEmail(email)) showMsg($el, true, '사용하실 수 있습니다.');
-	else showMsg($el, false, '이메일을 정확히 입력하세요.');
+	var idx = $el.data('id');
+	if(validEmail(email)) showMsg($el, true, successMsg[idx]);
+	else showMsg($el, false, errorMsg[idx]);
 }
 
 function onJoinSubmit(f) {
@@ -75,12 +107,15 @@ function onJoinSubmit(f) {
 	// 3. 가지고 있지 않으면 안가지고 있는 input에 커서를 위치시키기...
 	var $form = $(f);
 	var $input = $form.find('input');
-	$input.each(function() { $(this).trigger('blur') });
+	for(var i=0; i<$input.length; i++) {
+		fn[i]($input.eq(i));
+	}
 	var success = Array.from($input).every(function(v) { return $(v).hasClass('success') });
 	if(success) return true;
 	else {
-		console.log( $form.find('input:not(.success)').eq(0) );
-		$form.find('input:not(.success)').eq(0).focus();
+		var $el = $form.find('input:not(.success)').eq(0);
+		$el.focus();
+		$el.parent().next().show().text(errorMsg[$el.data('id')]);
 		return false;
 	}
 }
