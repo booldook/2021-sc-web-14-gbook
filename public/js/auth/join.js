@@ -26,7 +26,7 @@ function onFocus() {
 
 function onBlurId() {
 	var $userid = $(this);
-	var userid = $userid.val();
+	var userid = $userid.val().trim();
 	if(userid.length < 4) {
 		showMsg($userid, false, '아이디는 4자 이상입니다.');
 		return false;
@@ -42,8 +42,30 @@ function onBlurId() {
 
 function onBlurPw() {
 	var $el = $(this);
-	var pass = $el.val();
+	var pass = $el.val().trim();
 	if(validPass(pass)) showMsg($el, true, '사용하실 수 있습니다.');
 	else showMsg($el, false, '비밀번호는 숫자, 문자, 특수문자를 포함한 8 ~ 16자리 입니다.');
+}
+
+function onBlurPw2() {
+	var $el = $(this);
+	var pass = $el.val().trim();
+	var passOriginal = $('form[name="joinForm"]').find('input[name="userpw"]').val().trim();
+	if(pass === passOriginal) showMsg($el, true, '사용하실 수 있습니다.');
+	else showMsg($el, false, '비밀번호가 일치하지 않습니다.');
+}
+
+function onBlurName() {
+	var $el = $(this);
+	var name = $el.val().trim();
+	if(name.length > 0) showMsg($el, true, '사용하실 수 있습니다.');
+	else showMsg($el, false, '이름은 한글자 이상입니다.');
+}
+
+function onBlurMail() {
+	var $el = $(this);
+	var email = $el.val().trim();
+	if(validEmail(email)) showMsg($el, true, '사용하실 수 있습니다.');
+	else showMsg($el, false, '이메일을 정확히 입력하세요.');
 }
 
