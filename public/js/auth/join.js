@@ -31,7 +31,7 @@ function showMsg(el, valid, msg) {
 	}
 	else if(valid == 'RESET') {
 		$(el).removeClass('active success danger');
-		$(el).parent().next().removeClass('success').hide().text('');
+		// $(el).parent().next().removeClass('success').hide().text('');
 	}
 	else {
 		$(el).removeClass('danger success').addClass('active');
