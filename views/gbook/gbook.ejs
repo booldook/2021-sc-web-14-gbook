@@ -26,8 +26,10 @@
 		</tbody>
 	</table>
 </div>
-<%- include('../inc/pager.ejs', {...pager}) %>
-<%- include('./modal.ejs') %>
+<% if(lists && lists.length > 0) { %>
+	<%- include('../inc/pager.ejs', {...pager}) %>
+	<%- include('./modal.ejs') %>
+<% } %>
 
 <%- include('../inc/footer') %>
 <script src="/js/gbook/gbook.js"></script> 

@@ -40,8 +40,8 @@ router.post('/sign', isGuest, async (req, res, next) => {
 		if(r.length === 1) {	// 아이디 일치
 			compare = await bcrypt.compare(userpw, r[0].userpw);
 			if(compare) {	// 비밀번호 일치
-				let { id, userid, email, username } = r[0];
-				req.session.user = { id, userid, email, username };
+				let { id, userid, email, username, grade } = r[0];
+				req.session.user = { id, userid, email, username, grade };
 				res.send(alert('로그인 되었습니다.', '/'));
 			}
 			else {	// 비밀번호 틀림

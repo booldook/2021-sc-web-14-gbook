@@ -3,6 +3,7 @@ const router = express.Router();
 const { pool } = require('../modules/mysql-init');
 const { upload } = require('../modules/multer-init');
 const { error, alert, transDate, transFrontSrc, makePager } = require('../modules/utils');
+const { isGuest, isUser, isDormant, isVip, isAdmin } = require('../middlewares/auth-mw');
 
 const ejs = {
 	tabTitle: 'Express 방명록',
@@ -30,7 +31,7 @@ router.get(['/', '/list', '/list/:page'], async (req, res, next) => {
 	}
 });
 
-router.post('/create', upload.single('upfile'), async (req, res, next) => {
+router.post('/create', isUser, upload.single('upfile'), async (req, res, next) => {
 	try {
 		let sql, values; 
 
