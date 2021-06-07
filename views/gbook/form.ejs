@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="/css/gbook/form.css">
 <form action="/gbook/create" method="POST" enctype="multipart/form-data" onsubmit="return onCreate(this);">
+	<input type="hidden" name="id">
 	<div class="form-wrapper">
 		<div class="input-wrap">
 			<div>
@@ -7,15 +8,23 @@
 				<input type="text" name="content" class="form-control" placeholder="한 줄 내용" onkeyup="onKeyup(this);" onblur="onBlur(this);">
 			</div>
 			<div class="require-comment"></div>
-			<div>
-				<input type="file" name="upfile" class="form-control-file" placeholder="첨부이미지">
-				<div class="comment">
-					* 첨부파일은 이미지(jpg, png, gif)만 가능하며 5M 이하의 파일로 업로드 해 주세요.
+			<div class="file-wrap">
+				<div class="img-wrap">
+					<img src="/img/error/500-error.png" alt="기존이미지" class="img">
+					<i class="fa fa-times img-remove"></i>
+				</div>
+				<div>
+					<input type="file" name="upfile" class="form-control-file" placeholder="첨부이미지">
+					<div class="comment">
+						* 첨부파일은 이미지(jpg, png, gif)만 가능하며 5M 이하의 파일로 업로드 해 주세요.
+					</div>
 				</div>
 			</div>
 		</div>
 		<div class="bt-wrap">
 			<button class="btn btn-primary">저장</button>
+			<button class="btn btn-success">수정</button>
+			<button class="btn btn-danger" type="button" onclick="onReset(this.form);">취소</button>
 		</div>
 	</div>
 	<hr>

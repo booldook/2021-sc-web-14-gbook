@@ -12,3 +12,9 @@
 
 .form-wrapper input.require {border: 1px solid #a70707; background-color: #f3dede;}
 .form-wrapper .require-comment {margin: .25em 0 1em 0; color: #a70707; display: none;}
+
+
+.form-wrapper .file-wrap {display: flex;}
+.form-wrapper .img-wrap {display: flex; align-items: center; padding: 1em; border-right: 1px dotted #ddd; margin-right: 1em;}
+.form-wrapper .img-wrap img {max-width: 60px; max-height: 60px;}
+.form-wrapper .img-wrap i {font-size: 1em; padding: .25em .325em; background-color: #a70707; color: #fff; cursor: pointer; margin-left: .25em;}
