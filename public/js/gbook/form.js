@@ -47,7 +47,16 @@ $('.img-remove').click(function() {
 		console.log(id, fid);
 		$.get('/gbook/file/remove', { id: id, fid: fid }).then(onGet).catch(onErr);
 		function onGet(r) {	// res.status(200)
-			console.log(r);
+			if(r.success) {
+				$('.form-wrapper').find('.img-wrap img').attr('src', '');
+				$('.form-wrapper').find('.img-remove').data('id', '');
+				$('.form-wrapper').find('.img-remove').data('fid', '');
+				$('.form-wrapper').find('.img-wrap').hide();
+				$('#tr'+id).find('img').remove();
+			}
+			else {
+				alert('파일삭제에 실패했습니다.\n다시 시도해 보시고, 계속 문제가 발생되면 관리자에게 문의하세요.');
+			}
 		}
 		function onErr(err) {	// res.status(500)
 			console.log(err.responseText);

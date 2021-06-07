@@ -32,29 +32,50 @@ router.get(['/', '/list', '/list/:page'], async (req, res, next) => {
 	}
 });
 
-router.post('/create', isUser, upload.single('upfile'), async (req, res, next) => {
+router.post('/save', isUser, upload.single('upfile'), async (req, res, next) => {
 	try {
 		let sql, values; 
-
-		// gbook 저장
-		let { writer, content } = req.body;
-		sql = 'INSERT INTO gbook SET writer=?, content=?, uid=?';
-		values = [writer, content, req.session.user.id];
-		const [r] = await pool.execute(sql, values);
-
-		if(req.file) {
-			//gbookfile 저장
-			let { originalname, filename, size, mimetype } = req.file;
-			sql = 'INSERT INTO gbookfile SET oriname=?, savename=?, size=?, type=?, gid=?';
-			values = [originalname, filename, size, mimetype, r.insertId];
-			const [r2] = await pool.execute(sql, values);
+		let { writer, content, id } = req.body;
+		if(id && id !== '') { // 수정
+			console.log('수정');
+			sql = 'UPDATE gbook SET writer=?, content=? WHERE id=? AND uid=?';
+			var [r] = await pool.execute(sql, [writer, content, id, req.session.user.id]);
 		}
-		res.send(alert('저장되었습니다', '/gbook'));
+		else { // 저장
+			console.log('저장');
+			sql = 'INSERT INTO gbook SET writer=?, content=?, uid=?';
+			var [r] = await pool.execute(sql, [writer, content, req.session.user.id]);
+		}
+		if(req.file) { // 첨부파일 처리
+			console.log(r);
+			let { originalname, filename, size, mimetype, isExist=false } = req.file;
+			if(id) { // 수정에서 기존 파일 삭제
+				sql = 'SELECT savename FROM gbookfile WHERE gid=?';
+				const [r2] = await pool.execute(sql, [id]);
+				if(r2.length) {
+					await fs.remove(transBackSrc(r2[0].savename));
+					isExist = true;
+				}
+			}
+			if(isExist) {
+				sql = 'UPDATE gbookfile SET oriname=?, savename=?, size=?, type=? WHERE gid=?';
+				values = [originalname, filename, size, mimetype, id];
+			}
+			else {
+				sql = 'INSERT INTO gbookfile SET oriname=?, savename=?, size=?, type=?, gid=?';
+				values = [originalname, filename, size, mimetype, r.insertId];
+			}
+			const [r3] = await pool.execute(sql, values); // gbookfile 처리
+
+			if(id) res.send(alert('수정되었습니다.', '/'));
+			else res.send(alert('저장되었습니다.', '/'));
+		}		
 	}
 	catch(err) {
 		next(error(err));
 	}
 });
+
 
 router.get('/remove/:id', isUser, async (req, res, next) => {
 	try {
@@ -102,8 +123,7 @@ router.get('/file/remove', isUser, async (req, res, next) => {
 		const [r] = await pool.execute(sql, [req.query.id, req.session.user.id, req.query.fid]);
 		if(r.length === 1) {
 			sql = 'DELETE FROM gbookfile WHERE id=?';
-			const [r2] = pool.execute(sql, [req.query.fid]);
-			console.log(r2);
+			const [r2] = await pool.execute(sql, [req.query.fid]);
 			if(r2.affectedRows === 1) {
 				await fs.remove(transBackSrc(r[0].savename));
 				res.status(200).json({ code: 200, success: true });
