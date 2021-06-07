@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const { pool } = require('../modules/mysql-init');
 const { upload } = require('../modules/multer-init');
 const { error, alert, transDate, transFrontSrc, makePager } = require('../modules/utils');
+const { isGuest, isUser, isDormant, isVip, isAdmin } = require('../middlewares/auth-mw');
 
 const ejs = {
 	tabTitle: 'Express 방명록',
@@ -12,7 +13,7 @@ const ejs = {
 	pageMode: ''
 }
 
-router.get('/idchk/:userid', async (req, res, next) => {
+router.get('/idchk/:userid', isGuest, async (req, res, next) => {
 	try {
 		let sql;
 		let userid = req.params.userid;
@@ -26,11 +27,11 @@ router.get('/idchk/:userid', async (req, res, next) => {
 	}
 });
 
-router.get('/sign', (req, res, next) => {
+router.get('/sign', isGuest, (req, res, next) => {
 	res.render('auth/sign', { ...ejs, pageMode: 'SIGN', pageDesc: '회원이 아니신 분은 아래의 버튼을 클릭하여 회원가입 해 주세요.' });
 });
 
-router.post('/sign', async (req, res, next) => {
+router.post('/sign', isGuest, async (req, res, next) => {
 	try {
 		let sql, values, compare, msg = '아이디와 패스워드를 확인하세요.';
 		let { userid, userpw } = req.body;
@@ -56,17 +57,17 @@ router.post('/sign', async (req, res, next) => {
 	}
 });
 
-router.get('/signout', (req, res, next) => {
+router.get('/signout', isUser, (req, res, next) => {
 	req.session.destroy();
 	res.locals.user = null;
 	res.send(alert('로그아웃 되었습니다.', '/'));
 });
 
-router.get('/join', (req, res, next) => {
+router.get('/join', isGuest, (req, res, next) => {
 	res.render('auth/join', { ...ejs, pageMode: 'JOIN', pageDesc: '기존회원분은 아래의 버튼을 클릭하여 로그인 해 주세요.' });
 });
 
-router.post('/join', async (req, res, next) => {
+router.post('/join', isGuest, async (req, res, next) => {
 	try {
 		let sql, values;
 		let { userid, userpw, username, email } = req.body;
