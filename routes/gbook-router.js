@@ -49,7 +49,7 @@ router.post('/save', isUser, upload.single('upfile'), async (req, res, next) => 
 		if(req.file) { // 첨부파일 처리
 			console.log(r);
 			let { originalname, filename, size, mimetype, isExist=false } = req.file;
-			if(id) { // 수정에서 기존 파일 삭제
+			if(id && id !== '') { // 수정에서 기존 파일 삭제
 				sql = 'SELECT savename FROM gbookfile WHERE gid=?';
 				const [r2] = await pool.execute(sql, [id]);
 				if(r2.length) {
