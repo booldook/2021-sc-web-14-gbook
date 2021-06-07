@@ -29,3 +29,10 @@ function onBlur(el) {
 	}
 }
 
+function onFormReset(f) {
+	$(f).find('.form-wrapper').removeClass('active');
+	$(f).find('input[name="id"]').val('');
+	$(f).find('input[name="writer"]').val('');
+	$(f).find('input[name="content"]').val('');
+	$(f).find('.img-wrap img').attr('src', '');
+}

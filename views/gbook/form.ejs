@@ -1,9 +1,9 @@
 <link rel="stylesheet" href="/css/gbook/form.css">
 <form action="/gbook/create" method="POST" enctype="multipart/form-data" onsubmit="return onCreate(this);">
 	<div class="form-wrapper">
-		<input type="hidden" name="id">
 		<div class="input-wrap">
 			<div>
+				<input type="hidden" name="id">
 				<input type="text" name="writer" class="form-control" placeholder="작성자" onkeyup="onKeyup(this);" onblur="onBlur(this);">
 				<input type="text" name="content" class="form-control" placeholder="한 줄 내용" onkeyup="onKeyup(this);" onblur="onBlur(this);">
 			</div>
@@ -24,7 +24,7 @@
 		<div class="bt-wrap">
 			<button class="btn btn-primary bt-create">저장</button>
 			<button class="btn btn-success bt-update">수정</button>
-			<button class="btn btn-danger bt-reset" type="button" onclick="onReset(this.form);">취소</button>
+			<button class="btn btn-danger bt-reset" type="button" onclick="onFormReset(this.form);">취소</button>
 		</div>
 	</div>
 </form>
