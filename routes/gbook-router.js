@@ -80,7 +80,7 @@ router.get('/remove/:id', isUser, async (req, res, next) => {
 		sql = 'DELETE FROM gbook WHERE id=? AND uid=?'; // 글 레코드 삭제함 -> 첨부파일 레코드도 삭제됨
 		const [r2] = await pool.execute(sql, [id, req.session.user.id]);
 		if(r2.affectedRows === 1) { // 글 레코드 및 첨부파일 레코드가 삭제됐다면...
-			await fs.remove(transBackSrc(r[0].savename));	// 실제 첨부파일 삭제
+			if(r.length === 1) await fs.remove(transBackSrc(r[0].savename));	// 실제 첨부파일 삭제
 			res.redirect('/');
 		}
 		else {
