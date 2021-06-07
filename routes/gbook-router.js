@@ -36,8 +36,8 @@ router.post('/create', upload.single('upfile'), async (req, res, next) => {
 
 		// gbook 저장
 		let { writer, content } = req.body;
-		sql = 'INSERT INTO gbook SET writer=?, content=?';
-		values = [writer, content];
+		sql = 'INSERT INTO gbook SET writer=?, content=?, uid=?';
+		values = [writer, content, req.session.user.id];
 		const [r] = await pool.execute(sql, values);
 
 		if(req.file) {

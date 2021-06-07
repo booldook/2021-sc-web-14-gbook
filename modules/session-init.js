@@ -17,4 +17,4 @@ const options = {
 	store: new MySQLStore(storeOptions)
 }
 
-module.exports = () => session(options);
+module.exports = () => session(options); // return (req, res, next) => {}
