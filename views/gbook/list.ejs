@@ -11,8 +11,8 @@
 	<% if(user) { %>
 		<td>
 			<% if(user.id === v.uid) { %>
-			<button onclick="onUpdate(this);" class="btn btn-sm btn-success">수정</button>
-			<button onclick="onDelete(this);" class="btn btn-sm btn-danger">삭제</button>
+			<button onclick="onUpdate('<%= v.id %>');" class="btn btn-sm btn-success">수정</button>
+			<button onclick="onDelete('<%= v.id %>');" class="btn btn-sm btn-danger">삭제</button>
 			<% } %>
 		</td>
 	<% } %>

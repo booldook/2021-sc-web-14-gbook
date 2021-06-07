@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { pool } = require('../modules/mysql-init');
 const { upload } = require('../modules/multer-init');
-const { error, alert, transDate, transFrontSrc, makePager } = require('../modules/utils');
+const fs = require('fs-extra');
+const { error, alert, transDate, transFrontSrc, transBackSrc, makePager } = require('../modules/utils');
 const { isGuest, isUser, isDormant, isVip, isAdmin } = require('../middlewares/auth-mw');
 
 const ejs = {
@@ -49,6 +50,27 @@ router.post('/create', isUser, upload.single('upfile'), async (req, res, next) =
 			const [r2] = await pool.execute(sql, values);
 		}
 		res.send(alert('저장되었습니다', '/gbook'));
+	}
+	catch(err) {
+		next(error(err));
+	}
+});
+
+router.get('/remove/:id', isUser, async (req, res, next) => {
+	try {
+		let sql, values;
+		let id = req.params.id;
+		sql = 'SELECT * FROM gbookfile WHERE gid=?';	// 일단 첨부파일을 가져옴
+		const [r] = await pool.execute(sql, [id]);
+		sql = 'DELETE FROM gbook WHERE id=? AND uid=?'; // 글 레코드 삭제함 -> 첨부파일 레코드도 삭제됨
+		const [r2] = await pool.execute(sql, [id, req.session.user.id]);
+		if(r2.affectedRows === 1) { // 글 레코드 및 첨부파일 레코드가 삭제됐다면...
+			await fs.remove(transBackSrc(r[0].savename));	// 실제 첨부파일 삭제
+			res.redirect('/');
+		}
+		else {
+			next(error('삭제가 실패하였습니다.')); // 글 삭제 실패
+		}
 	}
 	catch(err) {
 		next(error(err));
