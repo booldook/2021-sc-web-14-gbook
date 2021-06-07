@@ -1,4 +1,4 @@
-.form-wrapper {margin: 1em 0; display: flex;}
+.form-wrapper {margin: 1em 0; display: flex; border-bottom: 1px solid #454d55; padding-bottom: 1em;}
 .form-wrapper > :first-child {flex-grow: 1;}
 .form-wrapper > :last-child {flex-grow: 0; margin-left: 1%;}
 .form-wrapper .input-wrap > :first-child {display: flex;}
@@ -14,7 +14,16 @@
 .form-wrapper .require-comment {margin: .25em 0 1em 0; color: #a70707; display: none;}
 
 
-.form-wrapper .file-wrap {display: flex;}
-.form-wrapper .img-wrap {display: flex; align-items: center; padding: 1em; border-right: 1px dotted #ddd; margin-right: 1em;}
+.form-wrapper .file-wrap {display: flex; margin-top: .5em;}
+.form-wrapper .img-wrap {display: flex; align-items: center; padding: 1em; border-right: 1px dotted #ddd; margin-right: 1em; display: none;}
 .form-wrapper .img-wrap img {max-width: 60px; max-height: 60px;}
 .form-wrapper .img-wrap i {font-size: 1em; padding: .25em .325em; background-color: #a70707; color: #fff; cursor: pointer; margin-left: .25em;}
+
+.form-wrapper .bt-create {display: inline-block;}
+.form-wrapper .bt-update {display: none;}
+.form-wrapper .bt-reset {display: none;}
+
+.form-wrapper.active .bt-create {display: none;}
+.form-wrapper.active .bt-update {display: inline-block;}
+.form-wrapper.active .bt-reset {display: inline-block;}
+.form-wrapper.active .img-wrap {display: block;}
