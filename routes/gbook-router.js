@@ -80,15 +80,44 @@ router.get('/remove/:id', isUser, async (req, res, next) => {
 router.get('/view/:id', isUser, async (req, res, next) => {
 	try {
 		let sql, values;
-		sql = 'SELECT G.*, F.savename FROM gbook G LEFT JOIN gbookfile F ON G.id = F.gid WHERE G.id=? AND G.uid=?';
+		sql = 'SELECT G.*, F.savename, F.id AS fid FROM gbook G LEFT JOIN gbookfile F ON G.id = F.gid WHERE G.id=? AND G.uid=?';
 		const [r] = await pool.execute(sql, [req.params.id, req.session.user.id]);
 		if(r.length == 1) {
 			r[0].savename = transFrontSrc(r[0].savename);
 			res.status(200).json({ code: 200, success: true, data: r[0] });
 		}
-		else res.status(200).json({ code: 200, success: false, data: null });
+		else {
+			res.status(200).json({ code: 200, success: false, data: null });
+		}
 	}
 	catch(err) {
+		res.status(500).json({ code: 500, err });
+	}
+});
+
+router.get('/file/remove', isUser, async (req, res, next) => {
+	try {
+		let sql, values;
+		sql = 'SELECT F.savename FROM gbook G LEFT JOIN gbookfile F ON G.id = F.gid WHERE G.id=? AND G.uid=? AND F.id=?';
+		const [r] = await pool.execute(sql, [req.query.id, req.session.user.id, req.query.fid]);
+		if(r.length === 1) {
+			sql = 'DELETE FROM gbookfile WHERE id=?';
+			const [r2] = pool.execute(sql, [req.query.fid]);
+			console.log(r2);
+			if(r2.affectedRows === 1) {
+				await fs.remove(transBackSrc(r[0].savename));
+				res.status(200).json({ code: 200, success: true });
+			}
+			else {
+				res.status(200).json({ code: 200, success: false });
+			}
+		}
+		else {
+			res.status(200).json({ code: 200, success: false });
+		}
+	}
+	catch(err) {
+		console.log(err);
 		res.status(500).json({ code: 500, err });
 	}
 });
