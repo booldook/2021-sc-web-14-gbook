@@ -37,18 +37,17 @@ router.post('/save', isUser, upload.single('upfile'), async (req, res, next) => 
 		let sql, values; 
 		let { writer, content, id } = req.body;
 		if(id && id !== '') { // 수정
-			console.log('수정');
 			sql = 'UPDATE gbook SET writer=?, content=? WHERE id=? AND uid=?';
 			var [r] = await pool.execute(sql, [writer, content, id, req.session.user.id]);
+			r.id = id;
 		}
 		else { // 저장
-			console.log('저장');
 			sql = 'INSERT INTO gbook SET writer=?, content=?, uid=?';
 			var [r] = await pool.execute(sql, [writer, content, req.session.user.id]);
+			r.id = r.insertId;
 		}
 		if(req.file) { // 첨부파일 처리
-			console.log(r);
-			let { originalname, filename, size, mimetype, isExist=false } = req.file;
+			let { originalname, filename, size, mimetype, isExist = false } = req.file;
 			if(id && id !== '') { // 수정에서 기존 파일 삭제
 				sql = 'SELECT savename FROM gbookfile WHERE gid=?';
 				const [r2] = await pool.execute(sql, [id]);
@@ -57,19 +56,14 @@ router.post('/save', isUser, upload.single('upfile'), async (req, res, next) => 
 					isExist = true;
 				}
 			}
-			if(isExist) {
-				sql = 'UPDATE gbookfile SET oriname=?, savename=?, size=?, type=? WHERE gid=?';
-				values = [originalname, filename, size, mimetype, id];
-			}
-			else {
-				sql = 'INSERT INTO gbookfile SET oriname=?, savename=?, size=?, type=?, gid=?';
-				values = [originalname, filename, size, mimetype, r.insertId];
-			}
+			sql = isExist ? 
+				'UPDATE gbookfile SET oriname=?, savename=?, size=?, type=? WHERE gid=?' :
+				'INSERT INTO gbookfile SET oriname=?, savename=?, size=?, type=?, gid=?' ;
+			values = [originalname, filename, size, mimetype, r.id];
 			const [r3] = await pool.execute(sql, values); // gbookfile 처리
-
-			if(id) res.send(alert('수정되었습니다.', '/'));
-			else res.send(alert('저장되었습니다.', '/'));
-		}		
+		}
+		if(id && id !== '') res.send(alert('수정되었습니다.', '/'));
+		else res.send(alert('저장되었습니다.', '/'));
 	}
 	catch(err) {
 		next(error(err));
